@@ -7,29 +7,7 @@ declare -a records
 declare -a users
 
 # Default Credentials
-users+=("admin, password, , ,read-write")
-
-# Login Prompt
-login(){
-    read -p "Enter your username: " username
-    read -p "Enter your password: " password
-}
-
-# Display Login Prompt
-login
-
-# Check login attempt
-successful_login=false
-
-for user in "${users[@]}"; do
-    IFS="," read -r -a user_info <<< "$user"
-    known_username="${user_info[0]}"
-    known_password="${user_info[1]}"
-    known_permissions="${user_info[4]}"
-
-    if ["$username" == "$known_username"] && ["$password" == "$known_password"]; then
-        successful_login=true
-        permissions="$known_permissions
+users+=("admin,password, , ,read-write")
 
 # Display Menu
 display_menu(){
@@ -40,7 +18,7 @@ echo "3 = Add User"
 echo "4 = Search"
 echo "5 = Exit"
 echo *****************
-read -p "Choose an option"
+read -p "Choose an option" option
 }
 
 # View Books
@@ -73,3 +51,73 @@ add_user(){
     read -p "Enter the Surname: " user_surname
     read -p "Choose Permissions: " permissions
 }
+
+# Search the library
+search(){
+    read -p "Enter a title or serial number: " search
+    found=false
+    for book in "${records[@]}"; do
+        if [[ "$book" == *"$search"* ]]; then
+            echo "$book"
+            found=true
+        fi
+    done
+    if [ "$found" = false ]; then
+        echo "No results"
+    fi
+    read -p "Press Enter to return to the menu"
+}
+
+
+# Function to handle login
+login(){
+    read -p "Enter your username: " username
+    read -p "Enter your password: " password
+    successful_login=false
+
+    for user in "${users[@]}"; do
+        IFS="," read -r -a user_info <<< "$user"
+        known_username="${user_info[0]}"
+        known_password="${user_info[1]}"
+
+        if [ "$username" = "$known_username" ] && [ "$password" = "$known_password" ]; then
+            successful_login=true
+            break
+        fi
+    done
+
+    if [ "$successful_login" = false ]; then
+        echo "Invalid Credentials"
+    else
+        echo "Login Successful"
+    fi
+}
+login
+
+# User Interaction
+echo "Library Management System"
+
+while [ "$successful_login" = false ]; do
+    login
+done
+
+while true; do
+    display_menu
+    case $option in
+        1) 
+            view_books
+            ;;
+        2) 
+            add_book
+            ;;
+        3) 
+            add_user
+            ;;
+        4) 
+            search
+            ;;
+        5) 
+            exit
+            ;;
+    esac
+done
