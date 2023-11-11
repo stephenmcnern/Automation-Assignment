@@ -9,7 +9,7 @@ declare -a users
 # Default Credentials
 users+=("admin,password, , ,read-write")
 
-# Display Menu
+#  Menu
 display_menu(){
 echo *****************
 echo "1 = View Books"
@@ -52,7 +52,7 @@ add_user(){
     read -p "Choose Permissions: " permissions
 }
 
-# Search the library
+# Search 
 search(){
     read -p "Enter a title or serial number: " search
     found=false
@@ -69,7 +69,7 @@ search(){
 }
 
 
-# Function to handle login
+# Login
 login(){
     read -p "Enter your username: " username
     read -p "Enter your password: " password
