@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# I couldn't get this to work on my ubuntu VM, and I cannot understand what the problem is with line 9.
 
 # Create the update and shutdown script
 echo "#!/bin/bash" > update_shutdown.sh
@@ -9,7 +8,10 @@ echo "sudo apt upgrade -y" >>update_shutdown.sh
 echo "vmrun -T ws -gu stephen -gp password stop \"~/vmware/Ubuntu 64-bit/Ubuntu 64-bit.vmx\" soft" >> update_shutdown.sh
 
 # Change permissions of the script
-chmod +x update_shutdown
+chmod +x update_shutdown.sh
 
 # Copy script to the VM
 vmrun -T ws -gu stephen -gp password copyFileToGuest "~/vmware/Ubuntu 64-bit/Ubuntu 64-bit.vmx" "/bin/bash" "/tmp/update_shutdown.sh"
+
+# Cron Scheduler Setup
+vmrun -T ws -gu stephen -gp password runProgramInGuest "~/vmware/Ubuntu 64-bit/Ubuntu 64-bit.vmx" "/bin/bash" "-c" "echo '0 18 * * * /bin/bash /tmp/update_shutdown.sh' | crontab -"

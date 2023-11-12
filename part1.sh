@@ -50,6 +50,9 @@ add_user(){
     read -p "Enter the Forename: " user_forename
     read -p "Enter the Surname: " user_surname
     read -p "Choose Permissions: " permissions
+
+    user_details="$username, $password, $user_forename, $user_surname, $permissions"
+    users+=("$user_details")
 }
 
 # Search 

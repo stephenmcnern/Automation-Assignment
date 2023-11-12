@@ -3,6 +3,7 @@
 # Variables
 path_ubuntu="~/vmware//Ubuntu 64-bit/Ubuntu 64-bit.vmx"
 path_windows="~/vmware/Windows10/Windows10 64-bit.vmx"
+# I'm using the same credentials for both, just for simplicity.
 username="my_username"
 password="my_password"
 

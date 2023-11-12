@@ -2,18 +2,21 @@
 
 # Check available space and memory
 get_resources(){
-    available_space=$(df -h / | awk 'NR==2{print $4}')
-    available_memory=$(free -h | awk 'NR==2{print $2}')
+
+    # I needed to remove "GB" from the returned information to get a pure integer value without letters.
+    available_space=$(df -h / | awk 'NR==2{gsub(/[A-Za-z]/, "", $4); print $4}')
+    available_memory=$(free -h | awk 'NR==2{gsub(/[A-Za-z]/, "", $2); print $2}')
 
     space_required=$1
     memory_required=$2
 
-    if [ "$available_space" -gt "$space_required"] && ["$available_memory" -gt "$memory_required"]; then
+    if [ "$available_space" -gt "$space_required" ] && [ "$available_memory" -gt "$memory_required" ]; then
         echo "Sufficient Resources"
     else 
         echo "Insufficient Resources Available"
     fi
 }
+
 
 # Resource Requirements
 total_space_needed=0
